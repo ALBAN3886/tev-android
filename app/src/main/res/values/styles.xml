@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.TEV" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#0099CC</item>
+        <item name="colorPrimary">#0099CC</item>
+        <item name="colorPrimaryDark">#0077AA</item>
+    </style>
+</resources>
