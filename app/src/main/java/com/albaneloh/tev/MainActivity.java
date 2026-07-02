@@ -53,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         swipeRefresh.setOnRefreshListener(() -> webView.reload());
 
-        // CORRECTIF : le SwipeRefreshLayout ne doit se déclencher
-        // que lorsque le WebView est vraiment tout en haut de la page.
-        // Sans ça, tirer vers le bas n'importe où dans le contenu
-        // (ex: dans le tableau de bord, le menu, etc.) était interprété
-        // comme "tirer pour rafraîchir" et rechargeait toute la page.
-        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView.getScrollY() > 0);
+        // CORRECTIF : le site défile via une <div> interne en JS
+        // (overflow-y:auto), pas via le scroll natif du WebView.
+        // webView.getScrollY() vaut donc toujours 0, ce qui rend
+        // impossible de distinguer "en haut de page" de "au milieu".
+        // On désactive le geste de pull-to-refresh : l'app a déjà des
+        // données Firebase en temps réel, ce n'est pas nécessaire,
+        // et ça évite tout rechargement accidentel pendant le scroll.
+        swipeRefresh.setEnabled(false);
 
         webView.loadUrl(SITE_URL);
     }
