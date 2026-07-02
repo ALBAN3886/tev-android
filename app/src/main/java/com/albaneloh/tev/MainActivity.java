@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setMediaPlaybackRequiresUserGesture(false);
 
+        // Empêche le WebView d'avoir son propre effet de rebond,
+        // qui pouvait aussi déclencher le SwipeRefreshLayout par erreur
+        webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -48,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
 
         swipeRefresh.setOnRefreshListener(() -> webView.reload());
+
+        // CORRECTIF : le SwipeRefreshLayout ne doit se déclencher
+        // que lorsque le WebView est vraiment tout en haut de la page.
+        // Sans ça, tirer vers le bas n'importe où dans le contenu
+        // (ex: dans le tableau de bord, le menu, etc.) était interprété
+        // comme "tirer pour rafraîchir" et rechargeait toute la page.
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> webView.getScrollY() > 0);
 
         webView.loadUrl(SITE_URL);
     }
