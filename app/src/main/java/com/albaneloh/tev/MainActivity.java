@@ -12,7 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String SITE_URL = "https://alban3886.github.io/";
+    private static final String SITE_URL = "https://alban3886.github.io/?app=1";
 
     private WebView webView;
     private SwipeRefreshLayout swipeRefresh;
